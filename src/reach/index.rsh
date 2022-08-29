@@ -22,7 +22,7 @@ const Player = {
     ...hasRandom,
     seeOutcome: Fun([UInt,UInt], Null),
     informTimeout: Fun([],Null),
-    getGuess:Fun([],Null),
+    getGuess:Fun([],UInt),
     getRandomNum:Fun([],UInt)
 };
 

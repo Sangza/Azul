@@ -3,6 +3,14 @@ import PlayerViews from './PlayerViews';
 import Deployer from '../components/Deployer';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import '../css/style.css'
+import '../css/base.css'
+import '../css/dark.css'
+import '../css/flickity.css'
+import '../css/fontello.css'
+import '../css/hamburger.css'
+import '../css/select2.css'
+import '../css/tippy.css'
 
 const exports = {...PlayerViews};
 
@@ -14,9 +22,9 @@ exports.Wrapper = class extends React.Component {
     return (
       <div className="anor_fn_main">
           {content}
-          <Header/>
+          {/* <Header/>
           <Deployer/>
-          <Footer/>
+          <Footer/> */}
       </div>
     );
   }
@@ -48,7 +56,7 @@ exports.Deploy = class extends React.Component {
   render() {
     const {parent, wager, standardUnit} = this.props;
     return (
-      <div className="anor_fn_modal share_box">
+      <div className="anor_fn_modal opened share_box">
         <div className="modal_in">
           <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Deployer (Francis)</div>
@@ -69,7 +77,7 @@ exports.Deploy = class extends React.Component {
 exports.Deploying = class extends React.Component {
   render() {
     return (
-      <div className="anor_fn_modal share_box">
+      <div className="anor_fn_modal opened share_box">
         <div className="modal_in">
           <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Deployer (Francis)</div>
@@ -99,7 +107,7 @@ exports.WaitingForAttacher = class extends React.Component {
   render() {
     const {ctcInfoStr} = this.props;
     return (
-      <div className="anor_fn_modal share_box">
+      <div className="anor_fn_modal opened share_box">
         <div className="modal_in">
           <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
           <div className="modal_title">Please give them this contract info:</div>
@@ -113,6 +121,87 @@ exports.WaitingForAttacher = class extends React.Component {
             <div className="disc_button">
               <a className="anor_fn_button" onClick={(e) => this.copyToClipboard(e.currentTarget)}>Copy to clipboard</a>
             </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+exports.WaitingForResults = class extends React.Component {
+  render() {
+    return (
+      <div className="anor_fn_modal opened share_box">
+        <div className="modal_in">
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
+          <div className="modal_title">Deployer (Francis)</div>
+          <div className="modal_content">
+            <div className="share_title">
+            <h3 className="fn_title">
+                Waiting for results...
+              </h3>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+exports.Timeout = class extends React.Component {
+  render() {
+    
+    return (
+      <div className="anor_fn_modal opened share_box" onClick ={() => window.location.reload()}>
+        <div className="modal_in">
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="Close" className="fn__svg"/></div>
+          <div className="modal_title">Deployer (Francis)</div>
+          <div className="modal_content">
+            <div className="share_title">
+            <h3 className="fn_title">
+                Oops! Time is up.
+              </h3>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+exports.Done = class extends React.Component {
+  render() {
+    const { outcome, price, guess } = this.props.parent.state;
+    const parseOutcome = () => {
+      if (/Bob/ig.test(outcome)) {
+        return 'You win!!'
+      }
+
+      if (/alice/ig.test(outcome)) {
+        return 'You lose!!'
+      }
+
+      return 'It was a draw!!'
+    }
+    return (
+      <div className="anor_fn_modal opened share_box">
+        <div className="modal_in">
+          <div className="modal_closer"><img src=".../public/svg/cancel.svg" alt="" className="fn__svg"/></div>
+          <div className="modal_title">Deployer (Francis)</div>
+          <div className="modal_content">
+            <div className="share_title">
+              <h3 className="fn_title">
+                { parseOutcome() }
+                <br />
+                The correct price is { price } and your guess was { guess }.
+              </h3>
+              
+            </div>
+            
           </div>
         </div>
       </div>

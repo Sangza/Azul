@@ -1,11 +1,10 @@
 import React from "react";
+import Discover from './Discover'
 
 class Default extends React.Component {
 	render() {
 		return (
-			<div>
-
-			</div>
+			<Discover />
 		)
 	}
 }

@@ -8,7 +8,7 @@ import Default from './components/Default';
 import './index.css';
 import * as backend from './reach/build/index.main.mjs';
 import { loadStdlib,ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
-const reach = loadStdlib(process.env);
+const reach = loadStdlib('ALGO');
 const intToOutcome = ['Bob wins!', 'Draw!', 'Alice wins!'];
 const { standardUnit } = reach;
 const defaults = { defaultFundAmt: '10', defaultWager: '3', standardUnit };
@@ -19,11 +19,12 @@ class App extends React.Component {
     this.state = { ...defaults, view : "Wrapper", ContentView : Default };
   }
   async connectWallet() { 
+    this.setState(({ view: 'ConnectAccount' }))
     reach.setWalletFallback(reach.walletFallback({providerEnv:'TestNet',MyAlgoConnect}))
     const acc = await reach.getDefaultAccount();
     const balAtomic = await reach.balanceOf(acc);
     const bal = reach.formatCurrency(balAtomic, 4);
-    this.setState({ acc, bal, view: 'ConnectAccount' });
+    this.setState({ acc, bal, view: "Wrapper" });
     console.log("Connected");
   }
   async fundAccount() { 
@@ -37,15 +38,17 @@ class App extends React.Component {
     await reach.fundFromFaucet(this.state.acc, reach.parseCurrency(fundAmount));
     this.setState({ view: 'DeployerOrAttacher' });
   }
+
   async startGame() { this.setState({ view: 'DeployerOrAttacher' }); }
   selectAttacher() { this.setState({ view: 'Wrapper', ContentView: Attacher }); }
   selectDeployer() { this.setState({ view: 'Wrapper', ContentView: Deployer }); }
+
   render() { return renderView(this, AppViews); }
 }
 
 class Player extends React.Component {
   random() { return reach.hasRandom.random(); }
-  async getRandomNumber() { // Fun([], UInt)
+  async getRandomNum() { // Fun([], UInt)
     const randomNumber = Math.floor(Math.random() * 10);
     console.log("randomNumber"+randomNumber);
     return randomNumber;
@@ -76,6 +79,7 @@ class Deployer extends Player {
     this.setState({ view: 'Deploying', ctc });
     this.wager = reach.parseCurrency(this.state.wager); // UInt
     this.deadline = { ETH: 10, ALGO: 100, CFX: 1000 }[reach.connector]; // UInt
+    this.timeFrame = { ETH: 10, ALGO: 100, CFX: 1000 }[reach.connector]; // UInt
     backend.Francis(ctc, this);
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
     this.setState({ view: 'WaitingForAttacher', ctcInfoStr });
